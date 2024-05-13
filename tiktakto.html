@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+            header {
+                width: 100vw;
+                text-align: center;
+            }
+
+            .table {
+                height: 300px;
+                width: 300px;
+                display: grid;
+                grid-template-columns: 100px 100px 100px;
+                grid-template-rows: 100px 100px 100px;
+                place-content: center;
+                border-width: 5px;
+                border: thin solid black;
+
+            }
+
+            .empty{
+                
+                background-color: azure;
+                border: thin solid black;
+                border-width: 5px;
+            }
+
+            main{
+                width: 100vw;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .firs_player{
+                display: flex;
+                background-color: green;
+                border: thin solid black;
+                border-width: 5px;
+                justify-content: center;
+
+                align-items: center;
+            }
+
+            .firs_player div:first-child{
+                width: 70px;
+                height: 70px;
+                border-radius: 50%;
+                background-color: black;
+                position: absolute;
+
+            }
+
+            .firs_player div:last-child{
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background-color: green;
+                position: relative;
+
+            }
+
+            .second_player{
+                display: flex;
+                background-color: red;
+                border: thin solid black;
+                border-width: 5px;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .second_player div:first-child{
+                position: absolute;
+                height: 70px;
+                width: 10px;
+                transform: rotate(-45deg);
+                background-color: black;
+
+            }
+
+            .second_player div:last-child{
+                height: 70px;
+                width: 10px;
+                transform: rotate(45deg);
+                background-color: black;
+                position: relative;
+            }
+
+            button{
+                width: 100px;
+            }
+
+
+
+
+
+
+    </style>
+
+</head>
+<body>
+    <header>
+        <h1>
+            Tic Tac Toe
+        </h1>
+    </header>
+    <main>
+        <div class="table">
+            <div class="empty">
+                <div></div>
+                <div></div>
+            </div>
+            <div class="empty">
+                <div></div>
+                <div></div>
+            </div>
+            <div class="empty">
+                <div></div>
+                <div></div>
+            </div>
+            <div class="empty">
+                <div></div>
+                <div></div>
+            </div>
+            <div class="empty">
+                <div></div>
+                <div></div>
+            </div>
+            <div class="empty">
+                <div></div>
+                <div></div>
+            </div>
+            <div class="empty">
+                <div></div>
+                <div></div>
+            </div>
+            <div class="empty">
+                <div></div>
+                <div></div>
+            </div>
+            <div class="empty">
+                <div></div>
+                <div></div>
+            </div>
+
+        </div>
+        <h2>
+            Nincs még nyertes
+        </h2>
+        <button>
+            Új játék
+        </button>
+    </main>
+
+</body>
+
+
+<script>
+
+let divs = document.querySelectorAll(".empty");
+let button = document.querySelector("button");
+let szoveg = document.querySelector("h2");
+let player1 = true;
+let matrix = [];
+let nyert = "";
+let game = true;
+szoveg.innerText = "Első játékos köre";
+
+
+    button.onclick = function () {
+        for (let div of divs) {
+            if (div.classList == "firs_player"){
+                div.classList.remove("firs_player");
+                div.classList.toggle("empty");
+            }
+            if (div.classList == "second_player"){
+                div.classList.remove("second_player");
+                div.classList.toggle("empty");
+            }
+            game = true;
+            player1 = true;
+            szoveg.innerText = "Első játékos köre";
+            
+        }
+    }
+
+    for(let div of divs){
+        matr()
+        div.onclick = function () {
+             if ( game ) {
+                if (div.classList == "empty"){
+                        if (player1) {
+                        div.classList.remove("empty");
+                        div.classList.toggle("firs_player");
+                        player1=false;
+                        }
+                        else{
+                        div.classList.remove("empty");
+                        div.classList.toggle("second_player");
+                        player1=true;
+                        }
+                        
+                    }
+                    matr()
+                    if (winner()) {
+                        game = false;
+                        szoveg.innerText = nyert;
+                        //console.log(nyert);
+                    }
+                    else{
+                        if (player1) {
+                            szoveg.innerText = "Első játékos köre";
+                        }
+                        else {
+                            szoveg.innerText = "Második játékos köre";
+                        }
+                    }
+
+             }              
+
+            
+        }
+    }
+
+
+
+    function matr () {
+        matrix = [];
+        let k = 0;
+        for (let i = 1; i <= 3; i++) {
+            let sor =[];
+            matrix.push(sor);
+            for (let j = 1; j <= 3; j++) {
+                /*let elem = {
+                    which: divs[k],
+                    whose: divs[k].className
+                }*/
+                sor.push(divs[k].className);
+                k++;
+            }
+        }
+    }
+
+    function winner () {
+        if (whoplayer("firs_player")) {
+            nyert = "Nyert az első játékos";
+            return true;
+            
+        }
+        if (whoplayer("second_player")) {
+            nyert = "Nyert a második játékos"
+            return true;
+
+        }
+
+        
+    }
+
+
+    function whoplayer (cN) {
+        for (let i = 0; i <= 2; i++) {
+            if (matrix[i][0] == cN) {
+                if (same("sor", i)) {
+                    return true;
+                }
+            }
+        }
+        for (let i = 0; i <= 2; i++) {
+            if (matrix[0][i] == cN) {
+                if (same("oszlop", i)) {
+                    return true
+                }
+            }
+        }
+        if (matrix[1][1] == cN) {
+                if (same("atlo", 0)) {
+                    return true
+                }
+            }
+
+    }
+
+    function same (hogyan, hol) {
+        if(hogyan == "sor") {
+            if(matrix[hol][0] == matrix[hol][1] &&  matrix[hol][0] == matrix[hol][2]){
+                return true;
+            }
+        }
+        if(hogyan == "oszlop") {
+            if(matrix[0][hol] == matrix[1][hol] &&  matrix[0][hol] == matrix[2][hol]){
+                return true;
+            }
+        }
+        if (hogyan == "atlo") {
+            if(matrix[0][0] == matrix[1][1] &&  matrix[0][0] == matrix[2][2]){
+                return true;
+                console.loge("megvan")
+            }
+            if(matrix[0][2] == matrix[1][1] &&  matrix[0][2] == matrix[2][0]){
+                return true;
+                console.loge("megvan")
+            }
+              
+        }
+    }   
+
+</script>
+</html>
