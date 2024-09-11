@@ -169,6 +169,7 @@ let player1 = true;
 let matrix = [];
 let nyert = "";
 let game = true;
+let round = 0;
 szoveg.innerText = "Első játékos köre";
 
 
@@ -193,6 +194,7 @@ szoveg.innerText = "Első játékos köre";
         matr()
         div.onclick = function () {
              if ( game ) {
+                round++;
                 if (div.classList == "empty"){
                         if (player1) {
                         div.classList.remove("empty");
@@ -211,6 +213,11 @@ szoveg.innerText = "Első játékos köre";
                         game = false;
                         szoveg.innerText = nyert;
                         //console.log(nyert);
+                    }
+                    else if(round==9){
+                        szoveg.innerText = "Döntetlen!";
+                        //console.log("döntetlen");
+                        game = false;
                     }
                     else{
                         if (player1) {
